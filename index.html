@@ -302,7 +302,53 @@ main.wrap{padding-top:47px;padding-bottom:32px}.intro{position:relative;min-heig
 
       <div class="field">
         <label for="deviceName">设备名称 <span class="opt">选填</span></label>
-        <div class="control"><input id="deviceName" type="text" maxlength="40" placeholder="例如 MacBook Pro" autocomplete="off"></div>
+        <div class="control">
+          <select id="deviceName" aria-label="设备名称" style="width:100%;height:100%;border:0;outline:0;background:transparent;color:inherit;font:inherit;padding:0 12px;cursor:pointer;border-radius:6px;">
+            <option value="">请选择 iPhone 型号</option>
+            <optgroup label="iPhone 12 系列">
+              <option value="iPhone 12 mini">iPhone 12 mini</option>
+              <option value="iPhone 12">iPhone 12</option>
+              <option value="iPhone 12 Pro">iPhone 12 Pro</option>
+              <option value="iPhone 12 Pro Max">iPhone 12 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 13 系列">
+              <option value="iPhone 13 mini">iPhone 13 mini</option>
+              <option value="iPhone 13">iPhone 13</option>
+              <option value="iPhone 13 Pro">iPhone 13 Pro</option>
+              <option value="iPhone 13 Pro Max">iPhone 13 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 14 系列">
+              <option value="iPhone 14">iPhone 14</option>
+              <option value="iPhone 14 Plus">iPhone 14 Plus</option>
+              <option value="iPhone 14 Pro">iPhone 14 Pro</option>
+              <option value="iPhone 14 Pro Max">iPhone 14 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 15 系列">
+              <option value="iPhone 15">iPhone 15</option>
+              <option value="iPhone 15 Plus">iPhone 15 Plus</option>
+              <option value="iPhone 15 Pro">iPhone 15 Pro</option>
+              <option value="iPhone 15 Pro Max">iPhone 15 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 16 系列">
+              <option value="iPhone 16e">iPhone 16e</option>
+              <option value="iPhone 16">iPhone 16</option>
+              <option value="iPhone 16 Plus">iPhone 16 Plus</option>
+              <option value="iPhone 16 Pro">iPhone 16 Pro</option>
+              <option value="iPhone 16 Pro Max">iPhone 16 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 17 系列">
+              <option value="iPhone 17">iPhone 17</option>
+              <option value="iPhone Air">iPhone Air</option>
+              <option value="iPhone 17 Pro">iPhone 17 Pro</option>
+              <option value="iPhone 17 Pro Max">iPhone 17 Pro Max</option>
+            </optgroup>
+            <optgroup label="iPhone 18 系列 / 2026 新款">
+              <option value="iPhone 18 Pro">iPhone 18 Pro</option>
+              <option value="iPhone 18 Pro Max">iPhone 18 Pro Max</option>
+              <option value="iPhone Duo">iPhone Duo</option>
+            </optgroup>
+          </select>
+        </div>
       </div>
 
       <div class="field">
@@ -329,7 +375,7 @@ main.wrap{padding-top:47px;padding-bottom:32px}.intro{position:relative;min-heig
       </div>
 
       <div class="actions">
-        <button class="btn" id="recalcBtn" type="button">更新方案</button>
+        <button class="btn" id="recalcBtn" type="button">查看方案</button>
         <button class="btn ghost" id="clearBtn" type="button">重置</button>
       </div>
       <p class="input-note"><span>◇</span> 修改信息后自动测算，金额实时更新</p>
@@ -662,7 +708,26 @@ main.wrap{padding-top:47px;padding-bottom:32px}.intro{position:relative;min-heig
   $('recalcBtn').addEventListener('click', () => {
     state.touchedPrice = true; state.touchedDate = true;
     render();
-    el.hero.classList.remove('flash'); void el.hero.offsetWidth; el.hero.classList.add('flash');
+
+    const p = parsePrice(el.price.value);
+    const first = parseDate(el.date.value);
+    if (!p.cents) {
+      el.price.focus();
+      return;
+    }
+    if (!first) {
+      el.date.focus();
+      return;
+    }
+
+    const params = new URLSearchParams({
+      device: el.name.value.trim(),
+      priceCents: p.cents.toString(),
+      period: String(state.period),
+      firstDate: el.date.value,
+      theme: document.documentElement.dataset.theme || 'horizon'
+    });
+    window.location.href = '租赁方案详情.html?' + params.toString();
   });
   $('clearBtn').addEventListener('click', () => {
     el.name.value = ''; el.price.value = ''; el.date.value = '';
