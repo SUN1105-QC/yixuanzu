@@ -55,6 +55,115 @@ main.wrap{padding-top:39px;padding-bottom:36px}.theme-toolbar{display:flex;align
 @media(max-width:640px){.wrap{padding:0 18px}.topbar-inner{height:76px}.brand-name{font-size:18px}.brand-sub{font-size:8px}.mark{width:36px;height:36px;font-size:23px}.header-nav{gap:8px}.header-nav a{font-size:10px;padding:8px 9px}.header-nav a:first-child{display:none}main.wrap{padding-top:27px}.theme-toolbar{justify-content:space-between;gap:8px;margin-bottom:23px}.theme-toolbar-label{font-size:10px}.theme-options{gap:2px;padding:3px}.theme-button{height:32px;font-size:10px;padding:0 8px;gap:5px}.theme-swatch{width:8px;height:8px}.intro{display:block;padding-bottom:23px}.intro h1{font-size:27px}.intro .description{font-size:11px}.intro-actions{padding-top:18px}.rule-strip{padding:12px 0;margin-bottom:22px;background:transparent;border-top:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0}.rule-caption{display:none}.rules{width:100%;gap:0;justify-content:space-between}.rules div{padding:0 9px;flex-direction:column;align-items:center;gap:3px;flex:1}.rules div:first-child{padding-left:9px}.rules dt{font-size:9px}.rules dd{font-size:13px}.plan-hero{padding:24px}.plan-ledger{padding:23px}.big{font-size:48px}.row{grid-template-columns:5.8em minmax(0,1fr) auto;gap:7px}.formula{font-size:9px}.amt{font-size:13px}.schedule{padding:23px 16px 16px}.sch-head{display:block;margin-bottom:18px}.sch-meta{text-align:left;max-width:none;margin:10px 0 0 35px;line-height:1.7}.schedule .section-caption{margin-top:5px}.table-wrap{overflow:visible}table{display:block;width:100%;min-width:0}thead{display:none}tbody{display:grid;gap:12px}tbody tr{display:grid;grid-template-columns:1fr auto;gap:9px 14px;padding:15px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);box-shadow:0 3px 12px color-mix(in srgb,var(--ink) 5%,transparent)}tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;min-width:0;font-size:11px;text-align:right}tbody td::before{flex:0 0 auto;font-size:9px;color:var(--muted);font-family:var(--sans);font-weight:400;text-align:left}tbody td:nth-child(1){grid-column:1/-1;justify-content:flex-start;padding-bottom:10px;margin-bottom:2px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--accent);text-align:left}tbody td:nth-child(1)::before{content:none}tbody td:nth-child(n+2){grid-column:1/-1}tbody td:nth-child(2)::before{content:"付款日期"}tbody td:nth-child(3)::before{content:"本期应付"}tbody td:nth-child(4)::before{content:"已付"}tbody td:nth-child(5)::before{content:"本期剩余"}tbody td:nth-child(6)::before{content:"状态"}tbody td:nth-child(3),tbody td:nth-child(5){font-size:14px;font-weight:600;color:var(--ink)}tbody td:nth-child(4){color:var(--muted)}tbody .date{font-size:12px}.tag{margin-left:5px;margin-top:3px}.status{font-size:9px;padding:3px 8px}.money{white-space:normal}tfoot{display:block;margin-top:14px}tfoot tr{display:grid;grid-template-columns:1fr;gap:8px;padding:15px 16px;border:1px solid var(--line);border-radius:10px;background:var(--soft-2)}tfoot td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;font-size:11px;text-align:right}tfoot td:first-child{padding-bottom:9px;margin-bottom:1px;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink)}tfoot td:nth-child(3)::before{content:"合同总金额";font:9px var(--sans);color:var(--muted)}tfoot td:nth-child(4){display:none}tfoot td:nth-child(5)::before{content:"剩余待付";font:9px var(--sans);color:var(--muted)}tfoot td:nth-child(6)::before{content:"状态";font:9px var(--sans);color:var(--muted)}tfoot td:nth-child(3),tfoot td:nth-child(5){font-size:15px;font-weight:600;color:var(--accent)}html[data-theme="platinum"] tfoot td:nth-child(3),html[data-theme="platinum"] tfoot td:nth-child(5){color:#edecea}.footer-note{margin-top:14px}.footer{flex-direction:column;gap:8px}}
 @media print{.theme-toolbar,.theme-announcement,.intro-actions,.header-nav,.header-note{display:none!important}body{background:#fff;color:#222}.topbar{background:#fff}.wrap{max-width:none;padding:0 15px}main.wrap{padding-top:20px}.rule-strip{margin-bottom:18px}.panel{box-shadow:none}.schedule{break-inside:avoid}.footer{margin-top:20px}}
 </style>
+
+<style id="schedule-view-styles">
+/* 分期计划：卡片 / 列表 双视图 */
+.sch-head-right{display:flex;align-items:flex-end;justify-content:flex-end;gap:14px;min-width:0}
+.schedule-view-toggle{display:inline-flex;flex:0 0 auto;padding:3px;border:1px solid var(--line);border-radius:8px;background:var(--soft-2)}
+.schedule-view-btn{height:30px;padding:0 12px;border:0;border-radius:6px;background:transparent;color:var(--muted);font:10px var(--sans);cursor:pointer;transition:background .15s,color .15s,box-shadow .15s}
+.schedule-view-btn:hover{color:var(--ink)}
+.schedule-view-btn[aria-pressed="true"]{background:var(--surface);color:var(--accent);box-shadow:0 1px 5px color-mix(in srgb,var(--ink) 10%,transparent);font-weight:600}
+html[data-theme="platinum"] .schedule-view-toggle{background:#252422}
+html[data-theme="platinum"] .schedule-view-btn[aria-pressed="true"]{background:#44433e;color:#f2f1ef}
+
+/* 卡片模式：桌面双列，窄屏单列 */
+.schedule[data-view="card"] .table-wrap{overflow:visible}
+.schedule[data-view="card"] table{display:block;width:100%}
+.schedule[data-view="card"] thead{display:none}
+.schedule[data-view="card"] tbody{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.schedule[data-view="card"] tbody tr{display:grid;grid-template-columns:1fr auto;gap:9px 14px;padding:15px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);box-shadow:0 3px 12px color-mix(in srgb,var(--ink) 5%,transparent)}
+.schedule[data-view="card"] tbody td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;min-width:0;font-size:11px;text-align:right}
+.schedule[data-view="card"] tbody td::before{flex:0 0 auto;font-size:9px;color:var(--muted);font-family:var(--sans);font-weight:400;text-align:left}
+.schedule[data-view="card"] tbody td:nth-child(1){grid-column:1/-1;justify-content:flex-start;padding-bottom:10px;margin-bottom:2px;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--accent);text-align:left}
+.schedule[data-view="card"] tbody td:nth-child(1)::before{content:none}
+.schedule[data-view="card"] tbody td:nth-child(n+2){grid-column:1/-1}
+.schedule[data-view="card"] tbody td:nth-child(2)::before{content:"付款日期"}
+.schedule[data-view="card"] tbody td:nth-child(3)::before{content:"本期应付"}
+.schedule[data-view="card"] tbody td:nth-child(4)::before{content:"已付"}
+.schedule[data-view="card"] tbody td:nth-child(5)::before{content:"本期剩余"}
+.schedule[data-view="card"] tbody td:nth-child(6)::before{content:"状态"}
+.schedule[data-view="card"] tbody td:nth-child(3),.schedule[data-view="card"] tbody td:nth-child(5){font-size:14px;font-weight:600;color:var(--ink)}
+.schedule[data-view="card"] tbody td:nth-child(4){color:var(--muted)}
+.schedule[data-view="card"] tfoot{display:block;grid-column:1/-1;margin-top:14px}
+.schedule[data-view="card"] tfoot tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;padding:15px 16px;border:1px solid var(--line);border-radius:10px;background:var(--soft-2)}
+.schedule[data-view="card"] tfoot td{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;font-size:11px;text-align:right}
+.schedule[data-view="card"] tfoot td:first-child{grid-column:1/-1;padding-bottom:9px;margin-bottom:1px;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink)}
+.schedule[data-view="card"] tfoot td:nth-child(3)::before{content:"合同总金额";font:9px var(--sans);color:var(--muted)}
+.schedule[data-view="card"] tfoot td:nth-child(4)::before{content:"已付";font:9px var(--sans);color:var(--muted)}
+.schedule[data-view="card"] tfoot td:nth-child(5)::before{content:"剩余待付";font:9px var(--sans);color:var(--muted)}
+.schedule[data-view="card"] tfoot td:nth-child(6)::before{content:"状态";font:9px var(--sans);color:var(--muted)}
+.schedule[data-view="card"] tfoot td:nth-child(3),.schedule[data-view="card"] tfoot td:nth-child(5){font-size:15px;font-weight:600;color:var(--accent)}
+
+/* 列表模式：桌面保持表格；移动端变成紧凑纵向列表 */
+.schedule[data-view="list"] .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.schedule[data-view="list"] table{display:table;width:100%;min-width:760px}
+.schedule[data-view="list"] thead{display:table-header-group}
+.schedule[data-view="list"] tbody{display:table-row-group}
+.schedule[data-view="list"] tbody tr{display:table-row;background:transparent;box-shadow:none}
+.schedule[data-view="list"] tbody td{display:table-cell;padding:17px 14px;border-bottom:1px solid var(--line);font-size:12px;text-align:left}
+.schedule[data-view="list"] tbody td.r{text-align:right}
+.schedule[data-view="list"] tbody td::before{content:none!important}
+.schedule[data-view="list"] tfoot{display:table-footer-group}
+.schedule[data-view="list"] tfoot tr{display:table-row;background:transparent;border:0;padding:0}
+.schedule[data-view="list"] tfoot td{display:table-cell;padding:19px 14px;border:0;font-size:14px;text-align:left}
+.schedule[data-view="list"] tfoot td.r{text-align:right}
+.schedule[data-view="list"] tfoot td::before{content:none!important}
+
+@media(max-width:760px){
+  .sch-head-right{width:100%;align-items:flex-start;justify-content:space-between;margin-top:11px;gap:10px}
+  .sch-head{display:block}
+  .sch-meta{margin:0!important;max-width:none!important;text-align:left!important;line-height:1.7;flex:1}
+  .schedule-view-toggle{margin-left:auto}
+  .schedule[data-view="card"] tbody{grid-template-columns:1fr}
+  .schedule[data-view="card"] tfoot tr{grid-template-columns:1fr}
+  .schedule[data-view="card"] tfoot td{grid-column:1!important}
+  .schedule[data-view="card"] tfoot td:nth-child(4){display:flex}
+
+  .schedule[data-view="list"] .table-wrap{overflow:visible}
+  .schedule[data-view="list"] table{display:block;min-width:0;width:100%}
+  .schedule[data-view="list"] thead{display:none}
+  .schedule[data-view="list"] tbody{display:block}
+  .schedule[data-view="list"] tbody tr{display:grid;grid-template-columns:58px minmax(0,1fr) auto;grid-template-areas:"period date status" "period due remain" "period paid paid";gap:5px 10px;padding:13px 2px;border-bottom:1px solid var(--line)}
+  .schedule[data-view="list"] tbody tr:first-child{padding-top:2px}
+  .schedule[data-view="list"] tbody td{display:flex;align-items:center;padding:0;border:0;min-width:0;font-size:10px;text-align:left}
+  .schedule[data-view="list"] tbody td:nth-child(1){grid-area:period;align-self:stretch;justify-content:flex-start;color:var(--accent);font-weight:600;font-size:11px;border-right:1px solid var(--line);padding-right:8px}
+  .schedule[data-view="list"] tbody td:nth-child(2){grid-area:date;font-size:11px;white-space:nowrap}
+  .schedule[data-view="list"] tbody td:nth-child(3){grid-area:due;justify-content:flex-start;font-size:13px;font-weight:600;color:var(--ink)}
+  .schedule[data-view="list"] tbody td:nth-child(3)::before{content:"应付 ";display:inline;color:var(--muted);font:9px var(--sans);margin-right:6px}
+  .schedule[data-view="list"] tbody td:nth-child(4){grid-area:paid;color:var(--muted)}
+  .schedule[data-view="list"] tbody td:nth-child(4)::before{content:"已付 ";display:inline;color:var(--muted);font:9px var(--sans);margin-right:6px}
+  .schedule[data-view="list"] tbody td:nth-child(5){grid-area:remain;justify-content:flex-end;font-size:11px;color:var(--ink);white-space:nowrap}
+  .schedule[data-view="list"] tbody td:nth-child(5)::before{content:"剩余 ";display:inline;color:var(--muted);font:9px var(--sans);margin-right:5px}
+  .schedule[data-view="list"] tbody td:nth-child(6){grid-area:status;justify-content:flex-end}
+  .schedule[data-view="list"] .tag{font-size:8px;margin-left:4px}
+  .schedule[data-view="list"] .status{font-size:8px;padding:2px 6px}
+  .schedule[data-view="list"] tfoot{display:block;margin-top:12px}
+  .schedule[data-view="list"] tfoot tr{display:grid;grid-template-columns:1fr auto;gap:7px 12px;padding:12px 13px;border-radius:8px;background:var(--soft-2)}
+  .schedule[data-view="list"] tfoot td{display:flex;align-items:center;justify-content:space-between;padding:0;border:0;font-size:10px;text-align:right}
+  .schedule[data-view="list"] tfoot td:first-child{grid-column:1/-1;padding-bottom:7px;border-bottom:1px solid var(--line);font-size:11px}
+  .schedule[data-view="list"] tfoot td:nth-child(3)::before{content:"总额"!important;display:inline!important;font:9px var(--sans);color:var(--muted);margin-right:6px}
+  .schedule[data-view="list"] tfoot td:nth-child(4){display:none}
+  .schedule[data-view="list"] tfoot td:nth-child(5)::before{content:"待付"!important;display:inline!important;font:9px var(--sans);color:var(--muted);margin-right:6px}
+  .schedule[data-view="list"] tfoot td:nth-child(6){grid-column:1/-1;justify-content:flex-start}
+}
+@media print{
+  .schedule-view-toggle{display:none!important}
+  .schedule[data-view] .table-wrap{overflow:visible!important}
+  .schedule[data-view] table{display:table!important;width:100%!important;min-width:0!important}
+  .schedule[data-view] thead{display:table-header-group!important}
+  .schedule[data-view] tbody{display:table-row-group!important}
+  .schedule[data-view] tbody tr{display:table-row!important;background:transparent!important;box-shadow:none!important;border:0!important;padding:0!important}
+  .schedule[data-view] tbody td{display:table-cell!important;padding:9px 8px!important;border-bottom:1px solid #ddd!important;font-size:10px!important;text-align:left!important}
+  .schedule[data-view] tbody td.r{text-align:right!important}
+  .schedule[data-view] tbody td::before{content:none!important}
+  .schedule[data-view] tfoot{display:table-footer-group!important}
+  .schedule[data-view] tfoot tr{display:table-row!important;background:transparent!important;border:0!important;padding:0!important}
+  .schedule[data-view] tfoot td{display:table-cell!important;padding:10px 8px!important;border:0!important;font-size:10px!important;text-align:left!important}
+  .schedule[data-view] tfoot td.r{text-align:right!important}
+  .schedule[data-view] tfoot td::before{content:none!important}
+}
+</style>
+
 </head>
 <body>
 <header class="topbar">
@@ -111,8 +220,17 @@ main.wrap{padding-top:39px;padding-bottom:36px}.theme-toolbar{display:flex;align
       </div>
     </section>
 
-    <section class="panel schedule" aria-labelledby="h-schedule">
-      <div class="sch-head"><div><div class="section-title"><span class="section-index">02</span><h2 id="h-schedule">您的分期付款计划</h2></div><p class="section-caption">分期付款计划 · 按月支付，轻松安排</p></div><span class="sch-meta" id="schMeta"></span></div>
+    <section class="panel schedule" data-view="card" aria-labelledby="h-schedule">
+      <div class="sch-head">
+        <div><div class="section-title"><span class="section-index">02</span><h2 id="h-schedule">您的分期付款计划</h2></div><p class="section-caption">分期付款计划 · 按月支付，轻松安排</p></div>
+        <div class="sch-head-right">
+          <span class="sch-meta" id="schMeta"></span>
+          <div class="schedule-view-toggle" role="group" aria-label="分期计划显示方式">
+            <button type="button" class="schedule-view-btn" data-schedule-view="card" aria-pressed="true">卡片</button>
+            <button type="button" class="schedule-view-btn" data-schedule-view="list" aria-pressed="false">列表</button>
+          </div>
+        </div>
+      </div>
       <div class="table-wrap"><table>
         <thead><tr><th>期数</th><th>付款日期</th><th class="r">本期应付</th><th class="r">已付</th><th class="r">本期剩余</th><th>状态</th></tr></thead>
         <tbody id="schBody"></tbody>
@@ -161,6 +279,20 @@ main.wrap{padding-top:39px;padding-bottom:36px}.theme-toolbar{display:flex;align
   }
   $('backBtn').addEventListener('click',()=>history.length>1?history.back():location.href='宜选租_查看方案跳转版.html');
   $('printBtn').addEventListener('click',()=>window.print());
+
+  // 分期计划显示方式：卡片 / 列表
+  const scheduleEl=document.querySelector('.schedule');
+  const scheduleViewButtons=[...document.querySelectorAll('.schedule-view-btn')];
+  function applyScheduleView(view){
+    if(!scheduleEl||!['card','list'].includes(view))return;
+    scheduleEl.dataset.view=view;
+    scheduleViewButtons.forEach(btn=>btn.setAttribute('aria-pressed',String(btn.dataset.scheduleView===view)));
+    try{localStorage.setItem('yixuanzu-schedule-view',view);}catch{}
+  }
+  scheduleViewButtons.forEach(btn=>btn.addEventListener('click',()=>applyScheduleView(btn.dataset.scheduleView)));
+  let initialScheduleView='card';
+  try{initialScheduleView=localStorage.getItem('yixuanzu-schedule-view')||'card';}catch{}
+  applyScheduleView(initialScheduleView);
 
   const themeContent={
     jade:{eyebrow:'EQUIPMENT LEASING SOLUTIONS',heading:'从容规划，<em>每一份投入。</em>',description:'专属设备租赁方案，让成本清晰，让选择简单。',rule:'透明计费 · 统一标准',footer:'YIXUANZU / LEASING CALCULATOR'},
